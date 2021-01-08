@@ -12,14 +12,14 @@ public class PlayerController : MonoBehaviour
 
     [Header("Player Controls")]
     [SerializeField] float maxSpeedSquared = 25;
-    [SerializeField] float acceleration = 1;
+    [SerializeField] float acceleration = 500;
     [SerializeField] float rotationTime = .12f;
-    [SerializeField] float jumpForce = 200;
+    [SerializeField] float jumpForce = 4;
 
 
     [Header("Camera Controls")]
     [SerializeField] Transform cam;
-    [SerializeField] float mouseSensitivity = 5;
+    [SerializeField] float mouseSensitivity = 0.1f;
 
 
 
@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (moveVector != Vector3.zero)
+        if (IsGrounded() && moveVector != Vector3.zero)
         {
             Move();
         }
@@ -39,7 +39,8 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-        mover.Jump(jumpForce);
+
+        if (IsGrounded()) mover.Jump(jumpForce);
     }
 
     private void Move()
@@ -62,5 +63,12 @@ public class PlayerController : MonoBehaviour
         direction *= mouseSensitivity;
         cam.Rotate(-direction.y, direction.x, 0);
         cam.Rotate(0, 0, -cam.localEulerAngles.z);
+    }
+
+    private bool IsGrounded()
+    {
+        bool g = Physics.Raycast(transform.position, Vector3.down, 0.1f);
+        print(g);
+        return Physics.Raycast(transform.position+Vector3.up*0.1f, Vector3.down, 0.2f);
     }
 }
