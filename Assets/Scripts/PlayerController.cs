@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     Mover mover;
     Vector3 moveVector;
+    Transform camPivot;
 
     float turnSmoothVelocity;
 
@@ -18,7 +19,6 @@ public class PlayerController : MonoBehaviour
 
 
     [Header("Camera Controls")]
-    [SerializeField] Transform cam;
     [SerializeField] float mouseSensitivity = 0.1f;
 
 
@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        camPivot = FindObjectOfType<CamPivot>().transform;
         mover = GetComponent<Mover>();
     }
 
@@ -39,7 +40,6 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-
         if (IsGrounded()) mover.Jump(jumpForce);
     }
 
@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
             mover.Move(moveVector * acceleration * Time.fixedDeltaTime);
         }
 
-        mover.Rotate(cam.eulerAngles.y, rotationTime);
+        mover.Rotate(camPivot.eulerAngles.y, rotationTime);
     }
 
     public void SetMove(Vector2 dir)
@@ -61,8 +61,13 @@ public class PlayerController : MonoBehaviour
     public void RotateCamera(Vector2 direction)
     {
         direction *= mouseSensitivity;
-        cam.Rotate(-direction.y, direction.x, 0);
-        cam.Rotate(0, 0, -cam.localEulerAngles.z);
+        camPivot.Rotate(-direction.y, direction.x, 0);
+        camPivot.Rotate(0, 0, -camPivot.localEulerAngles.z);
+
+        float x = camPivot.localEulerAngles.x;
+        if(x>270) x -= 360;
+        if(x > 70) camPivot.Rotate(70-x, 0, 0);
+        else if(x < -70) camPivot.Rotate(-70-x, 0, 0);
     }
 
     private bool IsGrounded()

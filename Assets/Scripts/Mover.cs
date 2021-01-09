@@ -5,22 +5,21 @@ using UnityEngine;
 
 public class Mover : MonoBehaviour
 {
-    Rigidbody rigidbody;
+    Rigidbody rb;
     float turnSmoothVelocity;
 
     // Start is called before the first frame update
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Update() {
-        print(GetSqrSpeed());
     }
 
     public void Move(Vector3 move)
     {
-        rigidbody.AddRelativeForce(move);
+        rb.AddRelativeForce(move);
     }
 
     public void Rotate(float camRotationY, float rotationTime)
@@ -31,10 +30,10 @@ public class Mover : MonoBehaviour
 
     internal void Jump(float jumpForce)
     {
-        rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
     public float GetSqrSpeed(){
-        return rigidbody.velocity.sqrMagnitude;
+        return rb.velocity.sqrMagnitude;
     }
 }   
