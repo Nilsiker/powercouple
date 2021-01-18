@@ -14,12 +14,18 @@ public class Mover : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Update() {
+    private void Update()
+    {
     }
 
     public void Move(Vector3 move)
     {
         rb.AddRelativeForce(move);
+    }
+
+    public void AbsoluteMove(Vector3 move)
+    {
+        rb.AddForce(move);
     }
 
     public void Rotate(float camRotationY, float rotationTime)
@@ -33,7 +39,8 @@ public class Mover : MonoBehaviour
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
-    public float GetSqrSpeed(){
+    public float GetSqrSpeed()
+    {
         return rb.velocity.sqrMagnitude;
     }
-}   
+}
