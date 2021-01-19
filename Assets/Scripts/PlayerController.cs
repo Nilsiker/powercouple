@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     Mover mover;
     Vector3 moveVector;
     Transform camPivot;
+    Animator anim;
 
     float turnSmoothVelocity;
 
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        anim=GetComponent<Animator>();
         camPivot = FindObjectOfType<CamPivot>().transform;
         mover = GetComponent<Mover>();
     }
